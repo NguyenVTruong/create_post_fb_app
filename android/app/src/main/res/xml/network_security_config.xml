@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--tạm thời cho Android production gọi API HTTP qua IP (không domain)-->
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">144.91.90.184</domain>
+    </domain-config>
+
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

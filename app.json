@@ -1,0 +1,75 @@
+{
+  "expo": {
+    "name": "vut",
+    "slug": "vut",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/splash-icon.png",
+    "scheme": "com.googleusercontent.apps.1079376030693-fl6cboddh08jfm2dg9lmo1o54uvj5mbg",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Ứng dụng cần truy cập thư viện ảnh để chọn ảnh đại diện.",
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "bundleIdentifier": "truong.vut",
+      "scheme": "com.googleusercontent.apps.1079376030693-ej23m1nunn6n8k01drt1glqh0betdusk",
+      "icon": "./assets/images/splash-icon.png"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "config": {
+        "cleartextTrafficPermitted": true,
+        "networkSecurityConfig": "./network_security_config.xml"
+      },
+      "usesCleartextTraffic": true,
+      "edgeToEdgeEnabled": true,
+      "package": "truong.vut",
+      "scheme": "com.googleusercontent.apps.1079376030693-fl6cboddh08jfm2dg9lmo1o54uvj5mbg",
+      "permissions": [
+        "INTERNET",
+        "READ_MEDIA_IMAGES",
+        "READ_EXTERNAL_STORAGE"
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-secure-store"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ed5b07f3-4228-4f75-ac45-77391aa0ab87"
+      }
+    },
+    "notification": {
+      "icon": "./assets/images/icon.png",
+      "color": "#00AEEF",
+      "androidMode": "default"
+    }
+  }
+}
