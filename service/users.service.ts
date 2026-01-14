@@ -10,6 +10,8 @@ export const getUserByEmail = async (email: string) => {
     }
 };
 
+
+
 export const findById = async (id: string) => {
     try {
         const response = await api.get(getApiUrlAuth('/api/v1/users/' + id), {});
