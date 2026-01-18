@@ -11,17 +11,18 @@ const STATUS_MAP = {
 import * as FileSystem from "expo-file-system/legacy";
 import * as Sharing from "expo-sharing";
 import { Platform } from "react-native";
+import {router} from "expo-router";
 // TODO: Expo Bare share nhiêu ảnh
-import Share from "react-native-share";
+// import Share from "react-native-share";
 
 export const shareMultipleImages = async (imageUrls: string[]) => {
     try {
-        await Share.open({
-            title: "Chia sẻ phòng trọ",
-            message: "Phòng trọ giá tốt – liên hệ ngay",
-            urls: imageUrls, // 👈 MẢNG ẢNH
-            failOnCancel: false,
-        });
+        // await Share.open({
+        //     title: "Chia sẻ phòng trọ",
+        //     message: "Phòng trọ giá tốt – liên hệ ngay",
+        //     urls: imageUrls, // 👈 MẢNG ẢNH
+        //     failOnCancel: false,
+        // });
     } catch (e) {
         console.log("Share error:", e);
     }
@@ -62,12 +63,12 @@ export function RoomCard({ room }: { room: any }) {
                         {room.price.toLocaleString()}/tháng
                     </Text>
                     <Text style={roomStyles.address} numberOfLines={1}>
-                        📍 {room.address}
+                        {room.address}
                     </Text>
 
                     <View style={roomStyles.meta}>
-                        <Text>📐 {room.area} m²</Text>
-                        <Text>🏢 Tầng {room.floor}</Text>
+                        <Text>{room.area} m²</Text>
+                        {/*<Text>Tầng {room.floor}</Text>*/}
                     </View>
 
                     <View style={roomStyles.actions}>
@@ -75,7 +76,17 @@ export function RoomCard({ room }: { room: any }) {
                             <Text style={roomStyles.callText}>Chia sẻ</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={roomStyles.detailBtn}>
+                        <TouchableOpacity
+                            style={roomStyles.detailBtn}
+                            onPress={() => {
+                                router.push({
+                                    pathname: "/PhongTroDetail/PhongTroDetailScreen",
+                                    params: {
+                                        phong: JSON.stringify(room),
+                                    },
+                                });
+                            }}
+                        >
                             <Text style={roomStyles.detailText}>Chi tiết</Text>
                         </TouchableOpacity>
                     </View>

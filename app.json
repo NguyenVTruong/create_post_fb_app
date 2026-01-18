@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "vut",
-    "slug": "vut",
+    "name": "product and service",
+    "slug": "product-and-service",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/splash-icon.png",
@@ -24,7 +24,7 @@
         "NSPhotoLibraryUsageDescription": "Ứng dụng cần truy cập thư viện ảnh để chọn ảnh đại diện.",
         "ITSAppUsesNonExemptEncryption": false
       },
-      "bundleIdentifier": "truong.vut",
+      "bundleIdentifier": "com.company.productAndService",
       "scheme": "com.googleusercontent.apps.1079376030693-ej23m1nunn6n8k01drt1glqh0betdusk",
       "icon": "./assets/images/splash-icon.png"
     },
@@ -39,7 +39,7 @@
       },
       "usesCleartextTraffic": true,
       "edgeToEdgeEnabled": true,
-      "package": "truong.vut",
+      "package": "com.company.productAndService",
       "scheme": "com.googleusercontent.apps.1079376030693-fl6cboddh08jfm2dg9lmo1o54uvj5mbg",
       "permissions": [
         "INTERNET",

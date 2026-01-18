@@ -28,6 +28,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
+            href: null,
           title: 'Kết nối',
           tabBarIcon: ({ color }) => <FontAwesome
               name="user"
@@ -49,30 +50,30 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="two"
-        options={{
-          title: 'Lịch chơi',
-          tabBarIcon: ({ color }) => <FontAwesome
-              name="calendar"
-              size={14}
-              color={Colors[colorScheme ?? 'light'].text}
-              // style={{ marginRight: 15, opacity: 1 }}
-          />,
-        }}
-      />
-    <Tabs.Screen
-        name="three"
-        options={{
-            title: 'Hồ sơ',
-            tabBarIcon: ({ color }) => <FontAwesome
-                name="list"
-                size={14}
-                color={Colors[colorScheme ?? 'light'].text}
-                // style={{ marginRight: 15, opacity: 1 }}
-            />,
-        }}
-    />
+    {/*  <Tabs.Screen*/}
+    {/*    name="two"*/}
+    {/*    options={{*/}
+    {/*      title: 'Lịch chơi',*/}
+    {/*      tabBarIcon: ({ color }) => <FontAwesome*/}
+    {/*          name="calendar"*/}
+    {/*          size={14}*/}
+    {/*          color={Colors[colorScheme ?? 'light'].text}*/}
+    {/*          // style={{ marginRight: 15, opacity: 1 }}*/}
+    {/*      />,*/}
+    {/*    }}*/}
+    {/*  />*/}
+    {/*<Tabs.Screen*/}
+    {/*    name="three"*/}
+    {/*    options={{*/}
+    {/*        title: 'Hồ sơ',*/}
+    {/*        tabBarIcon: ({ color }) => <FontAwesome*/}
+    {/*            name="list"*/}
+    {/*            size={14}*/}
+    {/*            color={Colors[colorScheme ?? 'light'].text}*/}
+    {/*            // style={{ marginRight: 15, opacity: 1 }}*/}
+    {/*        />,*/}
+    {/*    }}*/}
+    {/*/>*/}
     </Tabs>
   );
 }

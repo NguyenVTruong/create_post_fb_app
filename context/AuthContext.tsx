@@ -68,25 +68,25 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     // };
 
     const checkLogin = async () => {
-        setIsChecking(true);
-        try {
-            const token = await AsyncStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
-            const refreshToken = await SecureStore.getItemAsync(STORAGE_KEYS.REFRESH_TOKEN);
-            const user = await AsyncStorage.getItem(STORAGE_KEYS.USER_INFO);
-
-            if (!token || !refreshToken || !user) {
-                throw new Error('Missing auth');
-            }
-
-            // KHÔNG refresh ở đây
-            setIsAuthenticated(true);
+        // setIsChecking(true);
+        // try {
+        //     const token = await AsyncStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+        //     const refreshToken = await SecureStore.getItemAsync(STORAGE_KEYS.REFRESH_TOKEN);
+        //     const user = await AsyncStorage.getItem(STORAGE_KEYS.USER_INFO);
+        //
+        //     if (!token || !refreshToken || !user) {
+        //         throw new Error('Missing auth');
+        //     }
+        //
+        //     // KHÔNG refresh ở đây
+        //     setIsAuthenticated(true);
             router.replace('/(tabs)');
-        } catch {
-            setIsAuthenticated(false);
-            router.replace('/login');
-        } finally {
-            setIsChecking(false);
-        }
+        // } catch {
+        //     setIsAuthenticated(false);
+        //     router.replace('/login');
+        // } finally {
+        //     setIsChecking(false);
+        // }
     };
 
     // const refreshTokenHandler = async (): Promise<boolean> => {
@@ -115,12 +115,12 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     };
 
     const logout = async () => {
-        await SecureStore.deleteItemAsync(STORAGE_KEYS.REFRESH_TOKEN);
-        await AsyncStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-        await AsyncStorage.removeItem(STORAGE_KEYS.USER_INFO);
-
-        setIsAuthenticated(false);
-        router.replace('/login');
+        // await SecureStore.deleteItemAsync(STORAGE_KEYS.REFRESH_TOKEN);
+        // await AsyncStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+        // await AsyncStorage.removeItem(STORAGE_KEYS.USER_INFO);
+        //
+        // setIsAuthenticated(false);
+        // router.replace('/login');
     };
 
     return (
