@@ -85,19 +85,29 @@ export default function TabOneScreen() {
     const [priceFrom, setPriceFrom] = useState("");
     const [priceTo, setPriceTo] = useState("");
     const [district, setDistrict] = useState("");
+    const [districts, setDistricts] = useState([]);
+
+    const toggleDistrict= (item: any) => {
+        setDistricts((prev: any) =>
+            prev.includes(item)
+                ? prev.filter((d: any) => d !== item) // bỏ chọn
+                : [...prev, item]               // thêm
+        );
+    };
 
     const fetchRooms = async () => {
         try {
             setLoading(true);
-            const data = await getPhongTro();
-            console.log(data);
+            const data = await getPhongTro("");
             const normalized = data.data.map((item: any, index: number) => ({
                 id: item.id ?? index.toString(),
                 name: item.name ?? "Phòng trọ",
                 price: item.price ?? "Liên hệ",
                 area: item.area ?? "Liên hệ",
                 address: item.address ?? "",
+                content: item.content ?? "",
                 images: parseAndNormalizeDriveUrls(item.imageUrl), // 👈 QUAN TRỌNG
+                folderUrl: item.folderUrl ?? "",
             }));
             setRooms(normalized);
 
@@ -124,12 +134,50 @@ export default function TabOneScreen() {
     // }
 
 
-    function onPressClearSearch() {
+    async function onPressClearSearch() {
+        setPriceFrom("");
+        setPriceTo("");
+        setDistrict("");
+        setDistricts([])
 
+        await fetchRooms();
     }
 
-    function onPressSearch() {
+    async function onPressSearch(searchText: any) {
+        try {
+            const district = `${searchText.districts.toString()}`;
+            const minPrice = searchText.priceFrom
+                ? parseFloat(searchText.priceFrom) * 1_000_000
+                : null;
 
+            const maxPrice = searchText.priceTo
+                ? parseFloat(searchText.priceTo) * 1_000_000
+                : null;
+
+            const query = [
+                district && `district=${district}`,
+                minPrice && `minPrice=${minPrice}`,
+                maxPrice && `maxPrice=${maxPrice}`,
+            ].filter(Boolean).join("&");
+
+            const data = await getPhongTro("?" + query);
+            const normalized = data.data.map((item: any, index: number) => ({
+                id: item.id ?? index.toString(),
+                name: item.name ?? "Phòng trọ",
+                price: item.price ?? "Liên hệ",
+                area: item.area ?? "Liên hệ",
+                address: item.address ?? "",
+                content: item.content ?? "",
+                images: parseAndNormalizeDriveUrls(item.imageUrl), // 👈 QUAN TRỌNG
+            }));
+            setRooms(normalized);
+
+            setError(null);
+        } catch (err) {
+            console.log(err)
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -180,7 +228,7 @@ export default function TabOneScreen() {
 
                         <ScrollView showsVerticalScrollIndicator={false}>
                             {/* Giá */}
-                            <Text style={labelStyle}>Khoảng giá (VNĐ)</Text>
+                            <Text style={labelStyle}>Khoảng giá (triệu VNĐ)</Text>
                             <View style={{ flexDirection: "row", gap: 12 }}>
                                 <TextInput
                                     placeholder="Từ"
@@ -199,32 +247,36 @@ export default function TabOneScreen() {
                             </View>
 
                             {/* Quận / Huyện */}
-                            <Text style={labelStyle}>Quận / Huyện</Text>
-                            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
-                                {DISTRICTS.map((item) => (
+                            <Text style={labelStyle}>Quận / Huyện</Text><View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+                            {DISTRICTS.map((item) => {
+                                const isSelected = districts.includes(item);
+
+                                return (
                                     <TouchableOpacity
                                         key={item}
-                                        onPress={() => setDistrict(item)}
+                                        onPress={() => toggleDistrict(item)}
                                         style={{
                                             paddingVertical: 8,
                                             paddingHorizontal: 12,
                                             borderRadius: 20,
                                             borderWidth: 1,
-                                            borderColor: district === item ? "#2563eb" : "#e5e7eb",
-                                            backgroundColor: district === item ? "#2563eb" : "#fff",
+                                            borderColor: isSelected ? "#2563eb" : "#e5e7eb",
+                                            backgroundColor: isSelected ? "#2563eb" : "#fff",
                                         }}
                                     >
                                         <Text
                                             style={{
                                                 fontSize: 13,
-                                                color: district === item ? "#fff" : "#374151",
+                                                color: isSelected ? "#fff" : "#374151",
                                             }}
                                         >
                                             {item}
                                         </Text>
                                     </TouchableOpacity>
-                                ))}
-                            </View>
+                                );
+                            })}
+                        </View>
+
                         </ScrollView>
 
                         {/* Footer */}
@@ -238,9 +290,8 @@ export default function TabOneScreen() {
                         >
                             <TouchableOpacity
                                 onPress={() => {
-                                    setPriceFrom("");
-                                    setPriceTo("");
-                                    setDistrict("");
+                                    onPressClearSearch();
+                                    setShowFilterModel(false);
                                 }}
                             >
                                 <Text style={{ color: "#9ca3af", fontWeight: "600" }}>
@@ -250,7 +301,7 @@ export default function TabOneScreen() {
 
                             <TouchableOpacity
                                 onPress={() => {
-                                    onPressSearch({ priceFrom, priceTo, district });
+                                    onPressSearch({ priceFrom, priceTo, districts });
                                     setShowFilterModel(false);
                                 }}
                                 style={{
@@ -332,8 +383,6 @@ export default function TabOneScreen() {
                     }
                 />
             </SafeAreaView>
-
-
         </>
     );
 }

@@ -1,6 +1,5 @@
-export const API_AUTH_URL = 'http://144.91.90.184:8200/auth-service'
-export const API_CORE_URL = 'http://144.91.90.184:8200/spc-service';
-export const API_CORE_URL_WS = 'http://144.91.90.184:8200';
+export const API_AUTH_URL = 'http://217.217.254.1:8200/auth-service'
+export const API_CORE_URL = 'http://217.217.254.1:8200/spc-service';
 
 export const STORAGE_KEYS = {
     ACCESS_TOKEN: 'accessToken',

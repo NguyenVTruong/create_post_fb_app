@@ -5,9 +5,12 @@ import {
     StyleSheet,
     ScrollView,
     Image,
-    FlatList,
+    FlatList, Platform, SafeAreaView, TouchableOpacity,
 } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import {router, Stack, useLocalSearchParams} from "expo-router";
+import {StatusBar} from "expo-status-bar";
+import {Ionicons} from "@expo/vector-icons";
+import Icon from "react-native-vector-icons/Feather";
 
 export interface PhongTro {
     id: string;
@@ -28,62 +31,123 @@ export interface PhongTro {
 
 export default function PhongTroDetailScreen() {
     const params = useLocalSearchParams();
+    console.log(params);
 
     if (!params.phong || typeof params.phong !== "string") {
         return <Text>Lỗi dữ liệu phòng trọ</Text>;
     }
-
+    console.log(JSON.parse(params.phong));
     const phong = JSON.parse(params.phong);
 
     return (
-        <ScrollView style={styles.container}>
-            <FlatList
-                data={phong.anh}
-                horizontal
-                keyExtractor={(_, index) => index.toString()}
-                renderItem={({ item }) => (
-                    <Image source={{ uri: item }} style={styles.image} />
-                )}
-                showsHorizontalScrollIndicator={false}
-            />
-
-            <View style={styles.section}>
-                <Text style={styles.title}>{phong.tenPhong}</Text>
-                <Text style={styles.price}>
-                    {phong.gia.toLocaleString()} đ / tháng
-                </Text>
-                <Text style={styles.address}>
-                    {phong.diaChi}, Quận {phong.quan}
-                </Text>
-            </View>
-
-            <View style={styles.section}>
-                <Text style={styles.label}>Diện tích</Text>
-                <Text>{phong.dienTich} m²</Text>
-
-                <Text style={styles.label}>Tiền cọc</Text>
-                <Text>{phong.tienCoc?.toLocaleString()} đ</Text>
-
-                <Text style={styles.label}>Số người tối đa</Text>
-                <Text>{phong.soNguoiToiDa} người</Text>
-
-                <Text style={styles.label}>Trạng thái</Text>
-                <Text
+        <>
+            <Stack.Screen options={{headerShown: false}}/>
+            <SafeAreaView style={{
+                flex: 1,
+                backgroundColor: "#fff",
+                paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+            }}>
+                <View
                     style={{
-                        color: phong.trangThai === "trong" ? "green" : "red",
+                        height: 50,
+                        flexDirection: "row",
+                        alignItems: "center",
+                        paddingHorizontal: 10,
+                        backgroundColor: "#fff",
+                        borderBottomWidth: 1,
+                        borderColor: "#eee",
                     }}
                 >
-                    {phong.trangThai === "trong" ? "Còn trống" : "Đã thuê"}
-                </Text>
-            </View>
+                    {/* Back */}
+                    <TouchableOpacity
+                        onPress={() => router.back()}
+                        style={{width: 40, height: 40, justifyContent: "center", alignItems: "center"}}
+                    >
+                        <Ionicons name="chevron-back" size={24} color="#000"/>
+                    </TouchableOpacity>
 
-            {phong.moTa && (
-                <View style={styles.section}>
-                    <Text style={styles.label}>Mô tả</Text>
-                    <Text>{phong.moTa}</Text>
+                    {/* Title */}
+                    <Text
+                        style={{
+                            position: "absolute",
+                            left: 0,
+                            right: 0,
+                            textAlign: "center",
+                            fontSize: 18,
+                            fontWeight: "600",
+                            color: "#000",
+                        }}
+                    >
+                        Chi tiết
+                    </Text>
+
+                    {/* Delete */}
+                    <TouchableOpacity
+                        onPress={() => setShowFilterModel(true)}
+                        style={{
+                            marginLeft: "auto",
+                            width: 40,
+                            height: 40,
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+
+                        <Icon name="share" size={18} color="#000"/>
+                    </TouchableOpacity>
                 </View>
-            )}
-        </ScrollView>
+                <ScrollView style={styles.container}>
+                    <FlatList
+                        data={phong.images}
+                        horizontal
+                        keyExtractor={(_, index) => index.toString()}
+                        renderItem={({item}) => (
+                            <Image source={{uri: item}} style={styles.image}/>
+                        )}
+                        style={{marginTop: 10}}
+                        showsHorizontalScrollIndicator={false}
+                    />
+
+                    <View style={styles.section}>
+                        <Text style={styles.price}>
+                            {phong.price.toLocaleString()} đ / tháng
+                        </Text>
+                        <Text style={styles.address}>
+                            {phong.address}
+                        </Text>
+                    </View>
+
+                    <View style={styles.section}>
+                        {
+                            phong.area && (<>
+                                    <Text style={styles.label}>Diện tích</Text>
+
+                                    <Text>{phong.area.match(/\d+/)[0]} m²</Text>
+
+                            </>
+                            )
+                        }
+
+                        <Text style={styles.label}>Trạng thái</Text>
+                        <Text
+                            style={{
+                                color: phong.trangThai === "trong" ? "red" : "green",
+                            }}
+                        >
+                            {phong.trangThai === "trong" ? "" : "Còn trống"}
+                        </Text>
+                    </View>
+
+                    {phong.content && (
+                        <View style={styles.section}>
+                            <Text style={styles.label}>Mô tả</Text>
+                            <Text>{phong.content}</Text>
+                        </View>
+                    )}
+
+                </ScrollView>
+            </SafeAreaView>
+        </>
     );
 }
 
@@ -113,7 +177,7 @@ const styles = StyleSheet.create({
         shadowColor: "#000", // iOS shadow
         shadowOpacity: 0.08,
         shadowRadius: 6,
-        shadowOffset: { width: 0, height: 2 },
+        shadowOffset: {width: 0, height: 2},
     },
 
     /* TEXT */

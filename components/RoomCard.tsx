@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text, Image, TouchableOpacity, StyleSheet, FlatList, Modal} from "react-native";
+import {View, Text, Image, TouchableOpacity, StyleSheet, FlatList, Modal, Share} from "react-native";
 
 type RoomStatus = "available" | "rented" | "holding";
 
@@ -8,31 +8,24 @@ const STATUS_MAP = {
     rented: { label: "Đã thuê", color: "#ef4444" },
     holding: { label: "Giữ chỗ", color: "#f59e0b" },
 };
-import * as FileSystem from "expo-file-system/legacy";
-import * as Sharing from "expo-sharing";
-import { Platform } from "react-native";
-import {router} from "expo-router";
-// TODO: Expo Bare share nhiêu ảnh
-// import Share from "react-native-share";
 
-export const shareMultipleImages = async (imageUrls: string[]) => {
+import {router} from "expo-router";
+
+
+export const shareMultipleImages = async (imageUrls: string, address: string) => {
     try {
-        // await Share.open({
-        //     title: "Chia sẻ phòng trọ",
-        //     message: "Phòng trọ giá tốt – liên hệ ngay",
-        //     urls: imageUrls, // 👈 MẢNG ẢNH
-        //     failOnCancel: false,
-        // });
-    } catch (e) {
-        console.log("Share error:", e);
+        await Share.share({
+            message: 'Thông tin phòng: ' + address,
+            url: imageUrls, // iOS ưu tiên field này
+            title: ''
+        });
+    } catch (error) {
+        console.log(error);
     }
 };
 
 
 export function RoomCard({ room }: { room: any }) {
-    // @ts-ignore
-    const status = STATUS_MAP[room.status];
-
     return (
         <>
 
@@ -52,27 +45,22 @@ export function RoomCard({ room }: { room: any }) {
                     )}
                 />
 
-
-                {/*<View style={[roomStyles.badge, { backgroundColor: status.color }]}>*/}
-                {/*    <Text style={roomStyles.badgeText}>{status.label}</Text>*/}
-                {/*</View>*/}
-
                 <View style={roomStyles.body}>
-                    <Text style={roomStyles.title}>{room.name}</Text>
+                    {/*<Text style={roomStyles.title}>{room.name}</Text>*/}
                     <Text style={roomStyles.price}>
                         {room.price.toLocaleString()}/tháng
                     </Text>
                     <Text style={roomStyles.address} numberOfLines={1}>
                         {room.address}
                     </Text>
-
+                    {room.area && (
                     <View style={roomStyles.meta}>
-                        <Text>{room.area} m²</Text>
+                        <Text>{room.area.match(/\d+/)[0]} m²</Text>
                         {/*<Text>Tầng {room.floor}</Text>*/}
-                    </View>
+                    </View>)}
 
                     <View style={roomStyles.actions}>
-                        <TouchableOpacity style={roomStyles.callBtn} onPress={() => shareMultipleImages(room.images)} >
+                        <TouchableOpacity style={roomStyles.callBtn} onPress={() => shareMultipleImages(room.folderUrl, room.address)} >
                             <Text style={roomStyles.callText}>Chia sẻ</Text>
                         </TouchableOpacity>
 
